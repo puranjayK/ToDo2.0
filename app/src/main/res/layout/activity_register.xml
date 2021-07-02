@@ -7,70 +7,80 @@
     tools:context=".screens.RegisterActivity"
     android:background="@color/background">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/name_register"
+        android:layout_marginBottom="35dp"
+        android:text="REGISTER"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="50dp"/>
+
     <EditText
         android:id="@+id/name_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/username_register"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="113dp"
         android:layout_marginBottom="40dp"
-        android:ems="10"
         android:drawableLeft="@drawable/ic_baseline_person_outline_24"
         android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="Name"
         android:inputType="textPersonName"
-        android:hint="Name" />
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
 
     <EditText
         android:id="@+id/username_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/email_register"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="114dp"
         android:layout_marginBottom="44dp"
-        android:ems="10"
-        android:hint="Username"
         android:drawableLeft="@drawable/ic_outline_supervised_user_circle_24"
         android:drawablePadding="5dp"
-        android:inputType="textPersonName" />
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
 
     <EditText
         android:id="@+id/email_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/password_register"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="112dp"
         android:layout_marginBottom="46dp"
-        android:ems="10"
         android:drawableLeft="@drawable/ic_baseline_mail_outline_24"
         android:drawablePadding="5dp"
+        android:ems="10"
         android:hint="Email ID"
         android:inputType="textEmailAddress"
-       />
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
 
     <EditText
         android:id="@+id/password_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/register_register"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="112dp"
         android:layout_marginBottom="72dp"
+        android:drawableLeft="@drawable/ic_outline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:drawableLeft="@drawable/ic_outline_lock_24"
-        android:drawablePadding="5dp"/>
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/register_register"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="167dp"
+android:layout_centerHorizontal="true"
         android:layout_marginBottom="133dp"
-        android:text="Register" />
+        android:background="@drawable/rounded_corners"
+        android:text="Register"
+        android:textColor="@color/background" />
 </RelativeLayout>

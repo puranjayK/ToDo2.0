@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo.Add_Edit_Task;
-import com.example.todo.MyApplication;
+//import com.example.todo.MyApplication;
 import com.example.todo.R;
 import com.example.todo.model.ToDoModel;
 import com.example.todo.screens.MainActivity;

@@ -24,7 +24,7 @@ public interface JsonPlaceHolderAPI {
     @GET("todo/")
     Call<List<ToDoModel>> getToDo(@Header("Authorization") String token);
 
-    @PATCH("/todo/{id}/")
+    @PATCH("todo/{id}/")
     Call<ToDoModel> updateToDo(
                                 @Header("Authorization") String token,
                                 @Path("id")int id,
@@ -34,7 +34,7 @@ public interface JsonPlaceHolderAPI {
             @Header("Authorization") String token,
             @Body ToDo toDo
     );
-    @DELETE("/todo/{id}/")
+    @DELETE("todo/{id}/")
     Call<ToDo> deleteToDo(
             @Header("Authorization") String token,
             @Path("id") int id

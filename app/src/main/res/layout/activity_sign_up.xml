@@ -7,57 +7,67 @@
     tools:context=".screens.SignInActivity"
     android:background="@color/background">
 
-    <Button
-        android:id="@+id/login"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/username_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="84dp"
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textSize="50dp" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/register_login"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="28dp"
-        android:text="Login"/>
+android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
+        android:background="@drawable/rounded_corners"
+        android:text="Login"
+
+        android:textColor="@color/background" />
 
     <Button
         android:id="@+id/register_login"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="162dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginBottom="287dp"
-        android:text="Register"/>
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="156dp"
+        android:background="@drawable/rounded_corners"
+        android:text="Register"
+        android:textColor="@color/background" />
 
     <EditText
         android:id="@+id/password_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/login"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="99dp"
         android:layout_marginBottom="34dp"
-        android:ems="10"
-        android:inputType="textPassword"
         android:drawableLeft="@drawable/ic_outline_lock_24"
         android:drawablePadding="5dp"
-        android:hint="Password"/>
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="@color/white" />
 
     <EditText
         android:id="@+id/username_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/password_login"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="102dp"
         android:layout_marginBottom="34dp"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_outline_supervised_user_circle_24"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:drawableLeft="@drawable/ic_outline_supervised_user_circle_24"
-        android:drawablePadding="5dp"/>
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>

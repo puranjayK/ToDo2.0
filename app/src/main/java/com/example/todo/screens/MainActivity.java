@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todo.Add_Edit_Task;
 import com.example.todo.DialogCloseListener;
 import com.example.todo.JsonPlaceHolderAPI;
-import com.example.todo.MyApplication;
+//import com.example.todo.MyApplication;
 import com.example.todo.R;
 
 import com.example.todo.ToDo;
@@ -23,6 +24,7 @@ import com.example.todo.adapter.newToDoAdapter;
 import com.example.todo.model.ToDoModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,7 +34,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener, newToDoAdapter.OnNoteListener {
-//    public class MainActivity extends AppCompatActivity{
+
     private RecyclerView recyclerView;
     private newToDoAdapter tasksAdapter;
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private EditText searchText;
     private ImageView searchImage,back;
     private static String token;
-
+    private ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         searchText=findViewById(R.id.searchText);
         searchImage=findViewById(R.id.searchImage);
         back=findViewById(R.id.back);
+        pb=findViewById(R.id.progressBar);
+        pb.setVisibility(View.INVISIBLE);
 
         back.setVisibility(View.INVISIBLE);
         token=SignInActivity.getToken();
@@ -85,24 +89,68 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 Add_Edit_Task.newInstance().show(getSupportFragmentManager(),Add_Edit_Task.TAG);
             }
         });
-    }
+
+        searchImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                back.setVisibility(View.VISIBLE);
+                String search= searchText.getText().toString().trim();
+                if(!search.equals("")){
+                    List<ToDoModel> searchList=new ArrayList<>();
+                    for(ToDoModel task:taskList){
+                        if(task.getTask().contains(search)){
+
+                            searchList.add(task);
+
+                        }
+                    }
+                    tasksAdapter.setTask(searchList);
+                    tasksAdapter.notifyDataSetChanged();
+                }
+                else
+                    getAllTasks();
+
+//                tasksAdapter.setTask(taskList);
+//                tasksAdapter.notifyDataSetChanged();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllTasks();
+//                tasksAdapter.setTask(taskList);
+//                tasksAdapter.notifyDataSetChanged();
+                back.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        }
 
     public void getAllTasks(){
 
-        Call<List<ToDoModel>> call = jsonPlaceHolderAPI.getToDo("Token "+token);
+        pb.setVisibility(View.VISIBLE);
+        Call<List<ToDoModel>>   call = jsonPlaceHolderAPI.getToDo("Token "+token);
 
         call.enqueue(new Callback<List<ToDoModel>>() {
+
             @Override
             public void onResponse(Call<List<ToDoModel>> call, Response<List<ToDoModel>> response) {
+
                 if(!response.isSuccessful()){
                     Toast.makeText(MainActivity.this,"Error " + response.code(),Toast.LENGTH_SHORT).show();
                     return;
                 }
-                List<ToDoModel> toDos=response.body();
-                taskList=toDos;
-                tasksAdapter=new newToDoAdapter(MainActivity.this,toDos,MainActivity.this);
+                taskList=response.body();
+                for (ToDoModel t:taskList)
+                    System.out.println(t.getTask());
+                tasksAdapter=new newToDoAdapter(MainActivity.this,taskList,MainActivity.this);
                 recyclerView.setAdapter(tasksAdapter);
+
                 tasksAdapter.setTask(taskList);
+                pb.setVisibility(View.INVISIBLE);
+
                 Toast.makeText(MainActivity.this,"List updated",Toast.LENGTH_SHORT).show();
             }
 
@@ -117,8 +165,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        tasksAdapter.notifyDataSetChanged();
-        tasksAdapter.setTask(taskList);
+
+//        tasksAdapter.notifyDataSetChanged();
+//        tasksAdapter.setTask(taskList);
+        getAllTasks();
+
 
 
 
@@ -139,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 ////        recyclerView.setAdapter(tasksAdapter);
 ////        tasksAdapter.setTask(taskList);
 ////        System.out.println(taskList);
-        tasksAdapter.notifyDataSetChanged();
-        tasksAdapter.setTask(taskList);
+//        tasksAdapter.notifyDataSetChanged();
+//        tasksAdapter.setTask(taskList);
 
 
     }
@@ -151,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         tasksAdapter.editTask(position);
         tasksAdapter.notifyDataSetChanged();
         System.out.println("CLICKED" + position);
-        MyApplication.setEditPosition(position);
+//        MyApplication.setEditPosition(position);
     }
     @Override
     public void onDeleteClick(int position) {

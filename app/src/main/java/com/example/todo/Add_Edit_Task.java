@@ -12,24 +12,18 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo.adapter.newToDoAdapter;
-import com.example.todo.database.DatabaseHandler;
 import com.example.todo.model.ToDoModel;
 import com.example.todo.screens.MainActivity;
 import com.example.todo.screens.SignInActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,11 +33,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Add_Edit_Task extends BottomSheetDialogFragment {
    public static final String TAG="BottomActionDialog";
-
+    private ProgressBar pb;
     private EditText taskText;
     private Button saveButton;
     private RecyclerView recyclerView;
-    private DatabaseHandler db;
+
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
     private newToDoAdapter tasksAdapter;
     public static List<ToDoModel> taskList = MainActivity.getTaskList();
@@ -73,6 +67,9 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         taskText=getView().findViewById(R.id.newTaskText);
         saveButton=getView().findViewById(R.id.newTaskButton);
         saveButton.setEnabled(false);
+        pb=getView().findViewById(R.id.pb);
+        pb.setVisibility(View.INVISIBLE);
+//        recyclerView.setAdapter(tasksAdapter);
 
 
         Retrofit retrofit= new Retrofit.Builder()
@@ -82,8 +79,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         jsonPlaceHolderAPI=retrofit.create(JsonPlaceHolderAPI.class);
 
 
-        db=new DatabaseHandler(getActivity());
-        db.openDataBase();
+
 
         boolean isEdit=false;
         final Bundle bundle=getArguments();
@@ -133,7 +129,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
                     Add();
 
                 }
-                dismiss();
+
 
             }
         });
@@ -148,10 +144,9 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
 
     public void Add(){
         String text=taskText.getText().toString();
-        ToDoModel newTask= new ToDoModel();
         ToDo todo = new ToDo(text);
-
-        Call<ToDoModel>call=jsonPlaceHolderAPI.createToDo("Token "+SignInActivity.getToken(),todo);
+        pb.setVisibility(View.VISIBLE);
+        Call<ToDoModel>call=jsonPlaceHolderAPI.createToDo("Token " + SignInActivity.getToken(),todo);
 
             call.enqueue(new Callback<ToDoModel>() {
             @Override
@@ -161,31 +156,26 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
                     System.out.println("Error " +response.code());
                     return;
                 }
-                newTask.setId(response.body().getId());
-                newTask.setTask(response.body().getTask());
-                taskList.add(newTask);
-                MainActivity.setTaskList(taskList);
-                tasksAdapter.notifyDataSetChanged();
-                tasksAdapter.setTask(taskList);
+                System.out.println(response.body());
+                pb.setVisibility(View.INVISIBLE);
+                dismiss();
             }
+
             @Override
             public void onFailure(Call<ToDoModel> call, Throwable t) {
             }
         });
+
+
+
     }
     public void Edit(Bundle bundle,String editedTask){
         ToDo edited = new ToDo(editedTask);
-
-
         ToDoModel edit = new ToDoModel();
         edit.setTask(editedTask);
         edit.setId(bundle.getInt("id"));
         System.out.println("ID: " + bundle.getInt("id"));
-
-        MyApplication.setEditedTask(edit);
-
-
-
+        pb.setVisibility(View.VISIBLE);
         Call<ToDoModel> call= jsonPlaceHolderAPI.updateToDo("Token " + SignInActivity.getToken(),
                                                 bundle.getInt("id"),
                                                 edited);
@@ -198,9 +188,10 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
                     return;
                 }
                 System.out.println("Response: " +response.body().getTask());
-//TODO IF RESPONSE FAILED?
-                System.out.println(MyApplication.getEditedTask().getTask());
-                System.out.println(MyApplication.getEditedTask().getId());
+                dismiss();
+////TODO IF RESPONSE FAILED?
+//                System.out.println(MyApplication.getEditedTask().getTask());
+//                System.out.println(MyApplication.getEditedTask().getId());
 
 
             }
