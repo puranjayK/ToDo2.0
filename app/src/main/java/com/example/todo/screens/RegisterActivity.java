@@ -50,18 +50,36 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     public void RegisterMethod(){
-        Register register = new Register(name.getText().toString(),email.getText().toString(),username.getText().toString(),password.getText().toString());
-//        Register r = new Register("puranjay","p11@gmail.com","pk00003","01012002");
+        String nameString = name.getText().toString(),
+                emailString=email.getText().toString(),
+                usernameString=username.getText().toString(),
+                passwordString=password.getText().toString();
+
+        Register register = new Register(nameString,emailString,usernameString,passwordString);
         System.out.println("Registration" + name.getText().toString() + email.getText().toString() +username.getText().toString() + password.getText().toString());
         Call<Register> call =jsonPlaceHolderAPI.createAcc(register);
         call.enqueue(new Callback<Register>() {
             @Override
             public void onResponse(Call<Register> call, Response<Register> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this,"Error " + response.code(),Toast.LENGTH_SHORT).show();
+                    if(response.code()==400){
+                         if(nameString.equals(""))
+                             Toast.makeText(RegisterActivity.this,"Please Enter Your Name",Toast.LENGTH_SHORT).show();
+                        if(emailString.equals(""))
+                            Toast.makeText(RegisterActivity.this,"Please Enter Your Email",Toast.LENGTH_SHORT).show();
+                        if(usernameString.equals(""))
+                            Toast.makeText(RegisterActivity.this,"Please Enter Your Username",Toast.LENGTH_SHORT).show();
+                        if(passwordString.equals(""))
+                            Toast.makeText(RegisterActivity.this,"Please Enter Your Password",Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(RegisterActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
+
+                    }
+                    Toast.makeText(RegisterActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 token=response.body().getToken();
+                SignInActivity.setToken(token);
                 Intent i = new Intent(RegisterActivity.this,MainActivity.class);
                 startActivity(i);
 
@@ -76,4 +94,3 @@ public class RegisterActivity extends AppCompatActivity {
     }
 }
 
-//ToDo Error handling

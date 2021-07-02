@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todo.Add_Edit_Task;
 import com.example.todo.DialogCloseListener;
 import com.example.todo.JsonPlaceHolderAPI;
-//import com.example.todo.MyApplication;
+
 import com.example.todo.R;
 
 import com.example.todo.ToDo;
@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 else
                     getAllTasks();
 
-//                tasksAdapter.setTask(taskList);
-//                tasksAdapter.notifyDataSetChanged();
             }
         });
 
@@ -120,8 +118,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             @Override
             public void onClick(View v) {
                 getAllTasks();
-//                tasksAdapter.setTask(taskList);
-//                tasksAdapter.notifyDataSetChanged();
+
+
                 back.setVisibility(View.INVISIBLE);
             }
         });

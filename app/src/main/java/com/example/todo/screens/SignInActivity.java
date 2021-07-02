@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.todo.JsonPlaceHolderAPI;
@@ -20,8 +21,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends AppCompatActivity {
-    private Button login,register;
+    private Button login;
     private EditText username,password;
+    private TextView register;
 
     public static String getToken() {
         return token;
@@ -73,12 +75,15 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if(!response.isSuccessful()){
                     if(response.code()==400){
-                                                    Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
+                        if(username.getText().toString().equals(""))
+                            Toast.makeText(SignInActivity.this,"Please Enter Username",Toast.LENGTH_SHORT).show();
+                        if (password.getText().toString().equals(""))
+                            Toast.makeText(SignInActivity.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
 
                     }
-
-
-                        Toast.makeText(SignInActivity.this,"Error " + response.code(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this,"Unable to Login",Toast.LENGTH_SHORT).show();
 
                     return;
                 }
@@ -86,7 +91,7 @@ public class SignInActivity extends AppCompatActivity {
                 System.out.println(token);
                 Intent i = new Intent(SignInActivity.this,MainActivity.class);
                 startActivity(i);
-
+                finish();
             }
 
             @Override
@@ -98,4 +103,3 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 }
-//ToDo Error handling
