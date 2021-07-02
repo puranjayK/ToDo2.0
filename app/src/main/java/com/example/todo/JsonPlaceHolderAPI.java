@@ -30,7 +30,7 @@ public interface JsonPlaceHolderAPI {
                                 @Path("id")int id,
                                 @Body ToDo toDo);
     @POST("todo/create/")
-    Call<ToDoModel> createToDo(
+    Call<Void> createToDo(
             @Header("Authorization") String token,
             @Body ToDo toDo
     );
