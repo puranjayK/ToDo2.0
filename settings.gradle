@@ -1,0 +1,2 @@
+rootProject.name = "ToDO"
+include ':app'
