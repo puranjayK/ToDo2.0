@@ -73,14 +73,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if(!response.isSuccessful()){
                     if(response.code()==400){
-                        assert response.body() != null;
-                        if( response.body().getUsername().equals( "This field may not be blank.")){
-                            Toast.makeText(SignInActivity.this,"Please Enter Your Username",Toast.LENGTH_SHORT).show();
-                        }
-                        if(response.body().getNon_field_errors().equals("Invalid credentials or the user does not exist!"))
-                            Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
-                        if(response.body().getPassword().equals("This field may not be blank."))
-                            Toast.makeText(SignInActivity.this,"Please Enter Your Password",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
 
                     }
 
