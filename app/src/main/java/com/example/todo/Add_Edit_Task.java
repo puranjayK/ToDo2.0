@@ -146,23 +146,25 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         String text=taskText.getText().toString();
         ToDo todo = new ToDo(text);
         pb.setVisibility(View.VISIBLE);
-        Call<ToDoModel>call=jsonPlaceHolderAPI.createToDo("Token " + SignInActivity.getToken(),todo);
+        Call<Void>call=jsonPlaceHolderAPI.createToDo("Token " + SignInActivity.getToken(),todo);
 
-            call.enqueue(new Callback<ToDoModel>() {
+            call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<ToDoModel> call, Response<ToDoModel> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful())
                 {
                     System.out.println("Error " +response.code());
                     return;
                 }
-                System.out.println(response.body());
+                System.out.println("DISMISS" + response.body());
                 pb.setVisibility(View.INVISIBLE);
                 dismiss();
             }
 
             @Override
-            public void onFailure(Call<ToDoModel> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println(t.getMessage());
+
             }
         });
 
@@ -189,9 +191,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
                 }
                 System.out.println("Response: " +response.body().getTask());
                 dismiss();
-////TODO IF RESPONSE FAILED?
-//                System.out.println(MyApplication.getEditedTask().getTask());
-//                System.out.println(MyApplication.getEditedTask().getId());
+
 
 
             }
