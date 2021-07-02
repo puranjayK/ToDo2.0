@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         back.setVisibility(View.INVISIBLE);
         token=SignInActivity.getToken();
-        System.out.println(token);
+
         getAllTasks();
 
 
@@ -143,15 +143,14 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     return;
                 }
                 taskList=response.body();
-                for (ToDoModel t:taskList)
-                    System.out.println(t.getTask());
+
                 tasksAdapter=new newToDoAdapter(MainActivity.this,taskList,MainActivity.this);
                 recyclerView.setAdapter(tasksAdapter);
 
                 tasksAdapter.setTask(taskList);
                 pb.setVisibility(View.INVISIBLE);
 
-                Toast.makeText(MainActivity.this,"List updated",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Tasks Fetched",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -166,32 +165,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     @Override
     public void handleDialogClose(DialogInterface dialog) {
 
-//        tasksAdapter.notifyDataSetChanged();
-//        tasksAdapter.setTask(taskList);
+
         getAllTasks();
 
-
-
-
-
-
-        for(ToDoModel list: taskList)
-            System.out.println(list.getTask());
-//        ToDoModel updatedTask= new ToDoModel();
-//        if(MyApplication.getEditedTask().getTask()!=null){
-//            updatedTask.setId(MyApplication.getEditedTask().getId());
-//            updatedTask.setTask(MyApplication.getEditedTask().getTask());
-////        if(updatedTask.getTask()!=null)
-//            taskList.set(MyApplication.getEditPosition(),updatedTask);
-//        }
-//
-//        tasksAdapter.setTask(taskList);
-//        tasksAdapter.setTask(taskList);
-////        recyclerView.setAdapter(tasksAdapter);
-////        tasksAdapter.setTask(taskList);
-////        System.out.println(taskList);
-//        tasksAdapter.notifyDataSetChanged();
-//        tasksAdapter.setTask(taskList);
 
 
     }
@@ -201,8 +177,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         tasksAdapter.editTask(position);
         tasksAdapter.notifyDataSetChanged();
-        System.out.println("CLICKED" + position);
-//        MyApplication.setEditPosition(position);
+
     }
     @Override
     public void onDeleteClick(int position) {
@@ -225,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
                                 }
 
-                                System.out.println("Code: " +response.code());
+                              
                                 taskList.remove(position);
                                 tasksAdapter.notifyItemChanged(position);
                                 tasksAdapter.setTask(taskList);
@@ -251,32 +226,3 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
 }
-//        searchImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                back.setVisibility(View.VISIBLE);
-//                String search= searchText.getText().toString().trim();
-//                if(!search.equals("")){
-//                    taskList=db.getSearchList(search);
-//                }
-//                else
-//                    taskList=db.getAllTasks();
-//
-//                tasksAdapter.setTask(taskList);
-//                tasksAdapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                taskList=db.getAllTasks();
-//                tasksAdapter.setTask(taskList);
-//                tasksAdapter.notifyDataSetChanged();
-//                back.setVisibility(View.INVISIBLE);
-//            }
-//        });
-
-
-//
