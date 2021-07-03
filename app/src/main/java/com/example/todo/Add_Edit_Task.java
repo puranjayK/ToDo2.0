@@ -1,7 +1,9 @@
 package com.example.todo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +40,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
     private EditText taskText;
     private Button saveButton;
     private RecyclerView recyclerView;
-
+     SharedPreferences sharedPreferences ;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
     private newToDoAdapter tasksAdapter;
     public static List<ToDoModel> taskList = MainActivity.getTaskList();
@@ -69,6 +72,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         saveButton.setEnabled(false);
         pb=getView().findViewById(R.id.pb);
         pb.setVisibility(View.INVISIBLE);
+        sharedPreferences= getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 //        recyclerView.setAdapter(tasksAdapter);
 
 
@@ -90,7 +94,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
             taskText.setText(task);
             if(task.length()>0){
                 saveButton.setEnabled(true);
-                saveButton.setTextColor(Color.BLUE);
+
             }
         }
         taskText.addTextChangedListener(new TextWatcher() {
@@ -146,13 +150,15 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         String text=taskText.getText().toString();
         ToDo todo = new ToDo(text);
         pb.setVisibility(View.VISIBLE);
-        Call<Void>call=jsonPlaceHolderAPI.createToDo("Token " + SignInActivity.getToken(),todo);
+        Call<Void>call=jsonPlaceHolderAPI.createToDo( "Token " + sharedPreferences.getString("token",null),todo);
 
             call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful())
                 {
+                    Toast.makeText(getContext(),"Error in adding task",Toast.LENGTH_SHORT).show();
+                    dismiss();
                     System.out.println("Error " +response.code());
                     return;
                 }
@@ -173,20 +179,21 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
     }
     public void Edit(Bundle bundle,String editedTask){
         ToDo edited = new ToDo(editedTask);
-        ToDoModel edit = new ToDoModel();
-        edit.setTask(editedTask);
-        edit.setId(bundle.getInt("id"));
+//        ToDoModel edit = new ToDoModel();
+//        edit.setTask(editedTask);
+//        edit.setId(bundle.getInt("id"));
         System.out.println("ID: " + bundle.getInt("id"));
         pb.setVisibility(View.VISIBLE);
-        Call<ToDoModel> call= jsonPlaceHolderAPI.updateToDo("Token " + SignInActivity.getToken(),
+        Call<ToDoModel> call= jsonPlaceHolderAPI.updateToDo("Token " + sharedPreferences.getString("token",null),
                                                 bundle.getInt("id"),
                                                 edited);
         call.enqueue(new Callback<ToDoModel>() {
             @Override
             public void onResponse(Call<ToDoModel> call, Response<ToDoModel> response) {
                 if(!response.isSuccessful()){
-
+                    Toast.makeText(getContext(),"Error in editing task",Toast.LENGTH_SHORT).show();
                     System.out.println("Error" + response.code());
+                    dismiss();
                     return;
                 }
                 System.out.println("Response: " +response.body().getTask());

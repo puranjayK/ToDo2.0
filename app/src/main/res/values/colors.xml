@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="activity_background">#FFE3D8</color>
     <color name="background">#b5bfd4</color>
+    <color name="actionBarColor">#707ca1</color>
 </resources>

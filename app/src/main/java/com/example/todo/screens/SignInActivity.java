@@ -1,8 +1,11 @@
 package com.example.todo.screens;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +15,11 @@ import android.widget.Toast;
 
 import com.example.todo.JsonPlaceHolderAPI;
 import com.example.todo.Login;
+import com.example.todo.Profile;
 import com.example.todo.R;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,7 +31,7 @@ public class SignInActivity extends AppCompatActivity {
     private Button login;
     private EditText username,password;
     private TextView register;
-
+    SharedPreferences sharedPreferences;
     public static String getToken() {
         return token;
     }
@@ -40,12 +47,21 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.actionBarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
+
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("https://todo-app-csoc.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         jsonPlaceHolderAPI=retrofit.create(JsonPlaceHolderAPI.class);
+
+        sharedPreferences=getSharedPreferences("login",MODE_PRIVATE);
+        Intent i =getIntent();
 
         login=findViewById(R.id.login);
         register=findViewById(R.id.register_login);
@@ -66,6 +82,10 @@ public class SignInActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(sharedPreferences.getBoolean("logged",false)){
+            goToTasks();
+        }
     }
     public void LoginMethod(){
         Login login=new Login(username.getText().toString(),password.getText().toString());
@@ -83,15 +103,16 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
 
                     }
+                    else
                         Toast.makeText(SignInActivity.this,"Unable to Login",Toast.LENGTH_SHORT).show();
 
                     return;
                 }
                 token=response.body().getToken();
                 System.out.println(token);
-                Intent i = new Intent(SignInActivity.this,MainActivity.class);
-                startActivity(i);
-                finish();
+                sharedPreferences.edit().putString("token",token).apply();
+                sharedPreferences.edit().putBoolean("logged",true).apply();
+                goToTasks();
             }
 
             @Override
@@ -101,5 +122,10 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void goToTasks(){
+        Intent i = new Intent(SignInActivity.this,MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

@@ -15,6 +15,10 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface JsonPlaceHolderAPI {
+
+    @GET("auth/profile/")
+    Call<Profile> getProfile(@Header("Authorization") String token);
+
     @POST("auth/login/")
     Call<Login> login(@Body Login login);
 

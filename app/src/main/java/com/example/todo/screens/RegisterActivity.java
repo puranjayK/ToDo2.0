@@ -1,9 +1,14 @@
 package com.example.todo.screens;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button register_button;
     private EditText name,username,email,password;
     private static String token;
+    SharedPreferences sharedPreferences;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,15 @@ public class RegisterActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.actionBarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
+
         jsonPlaceHolderAPI=retrofit.create(JsonPlaceHolderAPI.class);
+
+        sharedPreferences=getSharedPreferences("login",MODE_PRIVATE);
 
         name=findViewById(R.id.name_register);
         username=findViewById(R.id.username_register);
@@ -48,6 +62,13 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterMethod();
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent i =new Intent(this,SignInActivity.class);
+        startActivity(i);
+        finish();
+        return super.onOptionsItemSelected(item);
     }
     public void RegisterMethod(){
         String nameString = name.getText().toString(),
@@ -75,13 +96,17 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
 
                     }
-                    Toast.makeText(RegisterActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(RegisterActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 token=response.body().getToken();
-                SignInActivity.setToken(token);
+//                SignInActivity.setToken(token);
+                sharedPreferences.edit().putString("token",token).apply();
+                sharedPreferences.edit().putBoolean("logged",true).apply();
                 Intent i = new Intent(RegisterActivity.this,MainActivity.class);
                 startActivity(i);
+                finish();
 
             }
 

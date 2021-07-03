@@ -1,15 +1,23 @@
 package com.example.todo.screens;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+//import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +25,7 @@ import com.example.todo.Add_Edit_Task;
 import com.example.todo.DialogCloseListener;
 import com.example.todo.JsonPlaceHolderAPI;
 
+import com.example.todo.Profile;
 import com.example.todo.R;
 
 import com.example.todo.ToDo;
@@ -49,14 +58,20 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public static List<ToDoModel> taskList;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
     private FloatingActionButton addFAB;
-    private EditText searchText;
-    private ImageView searchImage,back;
+    SharedPreferences sharedPreferences;
     private static String token;
+//    private
     private ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.actionBarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
 
         Retrofit retrofit= new Retrofit.Builder()
@@ -71,17 +86,15 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
         addFAB=findViewById(R.id.addFAB);
-        searchText=findViewById(R.id.searchText);
-        searchImage=findViewById(R.id.searchImage);
-        back=findViewById(R.id.back);
+
         pb=findViewById(R.id.progressBar);
         pb.setVisibility(View.INVISIBLE);
 
-        back.setVisibility(View.INVISIBLE);
-        token=SignInActivity.getToken();
+        sharedPreferences=getSharedPreferences("login",MODE_PRIVATE);
+        token=sharedPreferences.getString("token",null);
 
         getAllTasks();
-
+        getProfile();
 
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,16 +103,43 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
 
-        searchImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                back.setVisibility(View.VISIBLE);
-                String search= searchText.getText().toString().trim();
-                if(!search.equals("")){
+
+        }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        Menu optionsMenu=menu;
+        MenuItem searchItem=optionsMenu.findItem(R.id.search_icon);
+        MenuItem profileItem=optionsMenu.findItem(R.id.profile_icon);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                Intent i= new Intent(MainActivity.this,ProfileActivity.class);
+                startActivity(i);
+                finish();
+
+                return false;
+            }
+        });
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                SearchView searchView= (SearchView) searchItem.getActionView();
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        if(!newText.equals("")){
                     List<ToDoModel> searchList=new ArrayList<>();
                     for(ToDoModel task:taskList){
-                        if(task.getTask().contains(search)){
+                        if(task.getTask().contains(newText)){
 
                             searchList.add(task);
 
@@ -110,21 +150,17 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 }
                 else
                     getAllTasks();
-
+                return false;
+                    }
+                });
+                return false;
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAllTasks();
 
 
-                back.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }
+        return super.onCreateOptionsMenu(menu);
+    }
 
     public void getAllTasks(){
 
@@ -148,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 tasksAdapter.setTask(taskList);
                 pb.setVisibility(View.INVISIBLE);
 
-                Toast.makeText(MainActivity.this,"Tasks Fetched",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -162,14 +198,36 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-
-
         getAllTasks();
+    }
+    public void getProfile(){
+        Call<Profile> profileCall = jsonPlaceHolderAPI.getProfile("Token " + sharedPreferences.getString("token",null));
+        profileCall.enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                if(!response.isSuccessful()){
+                    System.out.println(sharedPreferences.getString("token",null));
+                    System.out.println(response.code());
+                    Toast.makeText(MainActivity.this,"Error in fetching profile",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String name=response.body().getName();
+                String username= response.body().getUsername();
+                String email= response.body().getEmail();
 
+                sharedPreferences.edit().putString("name",name).apply();
+                sharedPreferences.edit().putString("username",username).apply();
+                sharedPreferences.edit().putString("email",email).apply();
 
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+
+            }
+        });
 
     }
-
     @Override
     public void onEditClick(int position) {
 
