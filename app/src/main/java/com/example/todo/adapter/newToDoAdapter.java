@@ -61,11 +61,6 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
     }
 
-    public void deleteTask(int position){
-        ToDoModel item = toDoList.get(position);
-
-    }
-
     public void editTask(int position){
         ToDoModel item=toDoList.get(position);
         Bundle bundle=new Bundle();
