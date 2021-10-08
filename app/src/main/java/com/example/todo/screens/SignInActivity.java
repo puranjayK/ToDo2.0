@@ -33,13 +33,6 @@ public class SignInActivity extends AppCompatActivity {
     private TextView register;
     SharedPreferences sharedPreferences;
 
-    public static String getToken() {
-        return token;
-    }
-
-    public static void setToken(String token) {
-        SignInActivity.token = token;
-    }
 
     private static String token;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
