@@ -73,8 +73,6 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
         pb = getView().findViewById(R.id.pb);
         pb.setVisibility(View.INVISIBLE);
         sharedPreferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-//        recyclerView.setAdapter(tasksAdapter);
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://todo-app-csoc.herokuapp.com/")
