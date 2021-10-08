@@ -16,15 +16,15 @@ import android.widget.TextView;
 import com.example.todo.R;
 
 public class ProfileActivity extends AppCompatActivity {
-Button logout;
-TextView profile;
-SharedPreferences sharedPreferences;
+    Button logout;
+    TextView profile;
+    SharedPreferences sharedPreferences;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       Intent i =new Intent(this,MainActivity.class);
-       startActivity(i);
-       finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -33,28 +33,28 @@ SharedPreferences sharedPreferences;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        logout=findViewById(R.id.logout);
-        profile=findViewById(R.id.profile);
+        logout = findViewById(R.id.logout);
+        profile = findViewById(R.id.profile);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         ColorDrawable colorDrawable
                 = new ColorDrawable(getResources().getColor(R.color.actionBarColor));
         actionBar.setBackgroundDrawable(colorDrawable);
 
-        sharedPreferences=getSharedPreferences("login",MODE_PRIVATE);
-        String name=sharedPreferences.getString("name","Name");
-        String username= sharedPreferences.getString("username","Username");
-        String email= sharedPreferences.getString("email","abc@xyz.com");
+        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        String name = sharedPreferences.getString("name", "Name");
+        String username = sharedPreferences.getString("username", "Username");
+        String email = sharedPreferences.getString("email", "abc@xyz.com");
         profile.setText("\nName: " + name +
-                "\n\n" +"Username: " + username+
-                "\n\n" +"Email: " + email+"\n");
+                "\n\n" + "Username: " + username +
+                "\n\n" + "Email: " + email + "\n");
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                sharedPreferences.edit().putBoolean("logged",false).apply();
-                Intent i=new Intent(ProfileActivity.this,SignInActivity.class);
+                sharedPreferences.edit().putBoolean("logged", false).apply();
+                Intent i = new Intent(ProfileActivity.this, SignInActivity.class);
                 startActivity(i);
                 finish();
 

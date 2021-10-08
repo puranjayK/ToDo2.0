@@ -29,9 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends AppCompatActivity {
     private Button login;
-    private EditText username,password;
+    private EditText username, password;
     private TextView register;
     SharedPreferences sharedPreferences;
+
     public static String getToken() {
         return token;
     }
@@ -42,6 +43,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private static String token;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,20 +55,20 @@ public class SignInActivity extends AppCompatActivity {
                 = new ColorDrawable(getResources().getColor(R.color.actionBarColor));
         actionBar.setBackgroundDrawable(colorDrawable);
 
-        Retrofit retrofit= new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://todo-app-csoc.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        jsonPlaceHolderAPI=retrofit.create(JsonPlaceHolderAPI.class);
+        jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
 
-        sharedPreferences=getSharedPreferences("login",MODE_PRIVATE);
-        Intent i =getIntent();
+        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        Intent i = getIntent();
 
-        login=findViewById(R.id.login);
-        register=findViewById(R.id.register_login);
-        username=findViewById(R.id.username_login);
-        password=findViewById(R.id.password_login);
+        login = findViewById(R.id.login);
+        register = findViewById(R.id.register_login);
+        username = findViewById(R.id.username_login);
+        password = findViewById(R.id.password_login);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,54 +79,55 @@ public class SignInActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(SignInActivity.this,RegisterActivity.class);
+                Intent i = new Intent(SignInActivity.this, RegisterActivity.class);
                 startActivity(i);
                 finish();
             }
         });
 
-        if(sharedPreferences.getBoolean("logged",false)){
+        if (sharedPreferences.getBoolean("logged", false)) {
             goToTasks();
         }
     }
-    public void LoginMethod(){
-        Login login=new Login(username.getText().toString(),password.getText().toString());
-        Call<Login> call=jsonPlaceHolderAPI.login(login);
+
+    public void LoginMethod() {
+        Login login = new Login(username.getText().toString(), password.getText().toString());
+        Call<Login> call = jsonPlaceHolderAPI.login(login);
         call.enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
-                if(!response.isSuccessful()){
-                    if(response.code()==400){
-                        if(username.getText().toString().equals(""))
-                            Toast.makeText(SignInActivity.this,"Please Enter Username",Toast.LENGTH_SHORT).show();
+                if (!response.isSuccessful()) {
+                    if (response.code() == 400) {
+                        if (username.getText().toString().equals(""))
+                            Toast.makeText(SignInActivity.this, "Please Enter Username", Toast.LENGTH_SHORT).show();
                         if (password.getText().toString().equals(""))
-                            Toast.makeText(SignInActivity.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Please Enter Password", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(SignInActivity.this,"Invalid Username or Password",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
 
-                    }
-                    else
-                        Toast.makeText(SignInActivity.this,"Unable to Login",Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(SignInActivity.this, "Unable to Login", Toast.LENGTH_SHORT).show();
 
                     return;
                 }
-                token=response.body().getToken();
+                token = response.body().getToken();
                 System.out.println(token);
-                sharedPreferences.edit().putString("token",token).apply();
-                sharedPreferences.edit().putBoolean("logged",true).apply();
+                sharedPreferences.edit().putString("token", token).apply();
+                sharedPreferences.edit().putBoolean("logged", true).apply();
                 goToTasks();
             }
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
-                Toast.makeText(SignInActivity.this,"Fail " + t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignInActivity.this, "Fail " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
 
     }
-    public void goToTasks(){
-        Intent i = new Intent(SignInActivity.this,MainActivity.class);
+
+    public void goToTasks() {
+        Intent i = new Intent(SignInActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }

@@ -27,10 +27,10 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
     private List<ToDoModel> toDoList;
     private OnNoteListener onNoteListener;
 
-    public newToDoAdapter(MainActivity activity,List<ToDoModel>toDoList,OnNoteListener onNoteListener){
-        this.activity=activity;
-        this.toDoList=toDoList;
-        this.onNoteListener=onNoteListener;
+    public newToDoAdapter(MainActivity activity, List<ToDoModel> toDoList, OnNoteListener onNoteListener) {
+        this.activity = activity;
+        this.toDoList = toDoList;
+        this.onNoteListener = onNoteListener;
 
 
     }
@@ -38,13 +38,13 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
     @Override
     public newToDoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.task_view,parent,false);
-        return new ViewHolder(view,onNoteListener);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_view, parent, false);
+        return new ViewHolder(view, onNoteListener);
     }
 
     @Override
     public void onBindViewHolder(newToDoAdapter.ViewHolder holder, int position) {
-        ToDoModel currentTask= toDoList.get(position);
+        ToDoModel currentTask = toDoList.get(position);
         String task = currentTask.getTask();
         holder.task.setText(task);
     }
@@ -54,34 +54,35 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
         return toDoList.size();
     }
 
-    public void setTask(List<ToDoModel> toDoList){
+    public void setTask(List<ToDoModel> toDoList) {
 
-        this.toDoList=toDoList;
+        this.toDoList = toDoList;
         notifyDataSetChanged();
 
     }
 
-    public void editTask(int position){
-        ToDoModel item=toDoList.get(position);
-        Bundle bundle=new Bundle();
-        bundle.putInt("id",item.getId());
+    public void editTask(int position) {
+        ToDoModel item = toDoList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", item.getId());
         System.out.println(item.getId());
-        bundle.putString("task",item.getTask());
-        Add_Edit_Task fragment=new Add_Edit_Task();
+        bundle.putString("task", item.getTask());
+        Add_Edit_Task fragment = new Add_Edit_Task();
         fragment.setArguments(bundle);
-        fragment.show(activity.getSupportFragmentManager(),Add_Edit_Task.TAG);
+        fragment.show(activity.getSupportFragmentManager(), Add_Edit_Task.TAG);
 
 
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnNoteListener onNoteListener;
         TextView task;
-        ImageView edit,delete;
-        public ViewHolder(View itemView,OnNoteListener onNoteListener) {
+        ImageView edit, delete;
+
+        public ViewHolder(View itemView, OnNoteListener onNoteListener) {
             super(itemView);
-            this.onNoteListener=onNoteListener;
+            this.onNoteListener = onNoteListener;
             task = itemView.findViewById(R.id.toDoTextView);
             edit = itemView.findViewById(R.id.edit);
             delete = itemView.findViewById(R.id.delete);
@@ -106,10 +107,13 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
         }
     }
-    public interface OnNoteListener{
+
+    public interface OnNoteListener {
         void onEditClick(int position);
+
         void onDeleteClick(int position);
     }
+
     public Context getContext() {
         return activity;
     }

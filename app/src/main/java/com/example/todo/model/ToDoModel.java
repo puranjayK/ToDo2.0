@@ -15,13 +15,8 @@ public class ToDoModel {
         this.id = id;
     }
 
-
-
     public String getTask() {
         return task;
     }
 
-    public void setTask(String task) {
-        this.task = task;
-    }
 }

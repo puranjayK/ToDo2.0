@@ -30,14 +30,16 @@ public interface JsonPlaceHolderAPI {
 
     @PATCH("todo/{id}/")
     Call<ToDoModel> updateToDo(
-                                @Header("Authorization") String token,
-                                @Path("id")int id,
-                                @Body ToDo toDo);
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Body ToDo toDo);
+
     @POST("todo/create/")
     Call<Void> createToDo(
             @Header("Authorization") String token,
             @Body ToDo toDo
     );
+
     @DELETE("todo/{id}/")
     Call<ToDo> deleteToDo(
             @Header("Authorization") String token,
