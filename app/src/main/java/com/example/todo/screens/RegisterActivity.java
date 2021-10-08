@@ -103,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 token = response.body().getToken();
-//                SignInActivity.setToken(token);
                 sharedPreferences.edit().putString("token", token).apply();
                 sharedPreferences.edit().putBoolean("logged", true).apply();
                 Intent i = new Intent(RegisterActivity.this, MainActivity.class);
