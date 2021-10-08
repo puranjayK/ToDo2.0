@@ -155,10 +155,9 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
                 if (!response.isSuccessful()) {
                     Toast.makeText(getContext(), "Error in adding task", Toast.LENGTH_SHORT).show();
                     dismiss();
-                    System.out.println("Error " + response.code());
                     return;
                 }
-                System.out.println("DISMISS" + response.body());
+
                 pb.setVisibility(View.INVISIBLE);
                 dismiss();
             }
@@ -175,9 +174,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
 
     public void Edit(Bundle bundle, String editedTask) {
         ToDo edited = new ToDo(editedTask);
-//        ToDoModel edit = new ToDoModel();
-//        edit.setTask(editedTask);
-//        edit.setId(bundle.getInt("id"));
+
         System.out.println("ID: " + bundle.getInt("id"));
         pb.setVisibility(View.VISIBLE);
         Call<ToDoModel> call = jsonPlaceHolderAPI.updateToDo("Token " + sharedPreferences.getString("token", null),
