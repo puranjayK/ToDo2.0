@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText username, password;
     private TextView register;
     SharedPreferences sharedPreferences;
-
+    private ProgressBar progressBar;
 
     private static String token;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
@@ -62,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         register = findViewById(R.id.register_login);
         username = findViewById(R.id.username_login);
         password = findViewById(R.id.password_login);
-
+        progressBar = findViewById(R.id.progressBar2);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +86,12 @@ public class SignInActivity extends AppCompatActivity {
 
     public void LoginMethod() {
         Login login = new Login(username.getText().toString(), password.getText().toString());
+        progressBar.setVisibility(View.VISIBLE);
         Call<Login> call = jsonPlaceHolderAPI.login(login);
         call.enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 if (!response.isSuccessful()) {
                     if (response.code() == 400) {
                         if (username.getText().toString().equals(""))
@@ -100,7 +103,6 @@ public class SignInActivity extends AppCompatActivity {
 
                     } else
                         Toast.makeText(SignInActivity.this, "Unable to Login", Toast.LENGTH_SHORT).show();
-
                     return;
                 }
                 token = response.body().getToken();
