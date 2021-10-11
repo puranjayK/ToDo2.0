@@ -39,11 +39,8 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
     private ProgressBar pb;
     private EditText taskText;
     private Button saveButton;
-    private RecyclerView recyclerView;
     SharedPreferences sharedPreferences;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
-    private newToDoAdapter tasksAdapter;
-    public static List<ToDoModel> taskList = MainActivity.getTaskList();
 
     public static Add_Edit_Task newInstance() {
         return new Add_Edit_Task();
@@ -137,7 +134,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
     public void onDismiss(DialogInterface dialog) {
         Activity activity = getActivity();
         if (activity instanceof DialogCloseListener) {
-            ((DialogCloseListener) activity).handleDialogClose(dialog);
+            ((DialogCloseListener) activity).handleDialogClose();
         }
     }
 
@@ -173,7 +170,6 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
     public void Edit(Bundle bundle, String editedTask) {
         ToDo edited = new ToDo(editedTask);
 
-        System.out.println("ID: " + bundle.getInt("id"));
         pb.setVisibility(View.VISIBLE);
         Call<ToDoModel> call = jsonPlaceHolderAPI.updateToDo("Token " + sharedPreferences.getString("token", null),
                 bundle.getInt("id"),
