@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.todo.JsonPlaceHolderAPI;
@@ -30,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static String token;
     SharedPreferences sharedPreferences;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.username_register);
         email = findViewById(R.id.email_register);
         password = findViewById(R.id.password_register);
-
+        progressBar = findViewById(R.id.progressBar3);
         register_button = findViewById(R.id.register_register);
 
         register_button.setOnClickListener(new View.OnClickListener() {
@@ -81,10 +82,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         Register register = new Register(nameString, emailString, usernameString, passwordString);
         System.out.println("Registration" + name.getText().toString() + email.getText().toString() + username.getText().toString() + password.getText().toString());
+        progressBar.setVisibility(View.VISIBLE);
         Call<Register> call = jsonPlaceHolderAPI.createAcc(register);
         call.enqueue(new Callback<Register>() {
             @Override
             public void onResponse(Call<Register> call, Response<Register> response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 if (!response.isSuccessful()) {
                     if (response.code() == 400) {
                         if (nameString.equals(""))
@@ -113,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Register> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(RegisterActivity.this, "Fail " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }

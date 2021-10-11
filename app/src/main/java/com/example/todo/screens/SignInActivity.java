@@ -114,6 +114,7 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(SignInActivity.this, "Fail " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
