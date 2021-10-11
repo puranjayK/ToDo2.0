@@ -47,13 +47,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private RecyclerView recyclerView;
     private newToDoAdapter tasksAdapter;
 
-    public static List<ToDoModel> getTaskList() {
-        return taskList;
-    }
-
-    public static void setTaskList(List<ToDoModel> taskList) {
-        MainActivity.taskList = taskList;
-    }
 
     public static List<ToDoModel> taskList;
     private JsonPlaceHolderAPI jsonPlaceHolderAPI;
@@ -195,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog) {
+    public void handleDialogClose() {
         getAllTasks();
     }
 
