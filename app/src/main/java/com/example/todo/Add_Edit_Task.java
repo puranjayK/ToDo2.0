@@ -192,6 +192,7 @@ public class Add_Edit_Task extends BottomSheetDialogFragment {
             @Override
             public void onFailure(Call<ToDoModel> call, Throwable t) {
                 System.out.println(t.getMessage());
+                dismiss();
             }
         });
     }
