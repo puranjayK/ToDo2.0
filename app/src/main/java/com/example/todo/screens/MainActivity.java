@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
                 Intent i = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(i);
-                finish();
+
 
                 return false;
             }

@@ -55,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
                 sharedPreferences.edit().putBoolean("logged", false).apply();
                 Intent i = new Intent(ProfileActivity.this, SignInActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finish();
 
@@ -62,4 +63,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
