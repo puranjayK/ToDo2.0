@@ -34,6 +34,38 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
 
     }
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        OnNoteListener onNoteListener;
+        TextView task;
+        ImageView edit, delete;
+
+        public ViewHolder(View itemView, OnNoteListener onNoteListener) {
+            super(itemView);
+            this.onNoteListener = onNoteListener;
+            task = itemView.findViewById(R.id.toDoTextView);
+            edit = itemView.findViewById(R.id.edit);
+            delete = itemView.findViewById(R.id.delete);
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNoteListener.onEditClick(getAbsoluteAdapterPosition());
+
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNoteListener.onDeleteClick(getAbsoluteAdapterPosition());
+                }
+            });
+        }
+
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
 
 
     @NonNull
@@ -75,38 +107,8 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
     }
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        OnNoteListener onNoteListener;
-        TextView task;
-        ImageView edit, delete;
-
-        public ViewHolder(View itemView, OnNoteListener onNoteListener) {
-            super(itemView);
-            this.onNoteListener = onNoteListener;
-            task = itemView.findViewById(R.id.toDoTextView);
-            edit = itemView.findViewById(R.id.edit);
-            delete = itemView.findViewById(R.id.delete);
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onNoteListener.onEditClick(getAbsoluteAdapterPosition());
-
-                }
-            });
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onNoteListener.onDeleteClick(getAbsoluteAdapterPosition());
-                }
-            });
-        }
-
-
-        @Override
-        public void onClick(View v) {
-
-        }
+    public Context getActivity() {
+        return activity;
     }
 
     public interface OnNoteListener {
@@ -115,7 +117,4 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
         void onDeleteClick(int position);
     }
 
-    public Context getActivity() {
-        return activity;
-    }
 }
