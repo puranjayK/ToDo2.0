@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        taskList = new ArrayList<ToDoModel>();
 
         addFAB = findViewById(R.id.addFAB);
 
@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     return;
                 }
                 taskList = response.body();
-
                 tasksAdapter = new newToDoAdapter(MainActivity.this, taskList, MainActivity.this);
                 recyclerView.setAdapter(tasksAdapter);
 
