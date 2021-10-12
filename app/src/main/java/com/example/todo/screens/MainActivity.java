@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public void onDeleteClick(int position) {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(tasksAdapter.getContext());
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(tasksAdapter.getActivity());
         builder.setTitle("Delete Task");
         builder.setMessage("Are you sure you want to delete this Task?");
         builder.setPositiveButton("Yes",

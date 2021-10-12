@@ -115,7 +115,7 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
         void onDeleteClick(int position);
     }
 
-    public Context getContext() {
+    public Context getActivity() {
         return activity;
     }
 }
