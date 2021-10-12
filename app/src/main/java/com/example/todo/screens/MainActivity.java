@@ -3,14 +3,12 @@ package com.example.todo.screens;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-//import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
