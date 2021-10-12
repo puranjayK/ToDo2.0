@@ -34,7 +34,7 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
 
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder  {
         OnNoteListener onNoteListener;
         TextView task;
         ImageView edit, delete;
@@ -60,11 +60,6 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
             });
         }
 
-
-        @Override
-        public void onClick(View v) {
-
-        }
     }
 
 
