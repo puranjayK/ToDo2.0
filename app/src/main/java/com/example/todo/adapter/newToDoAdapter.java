@@ -102,9 +102,6 @@ public class newToDoAdapter extends RecyclerView.Adapter<newToDoAdapter.ViewHold
 
     }
 
-    public Context getActivity() {
-        return activity;
-    }
 
     public interface OnNoteListener {
         void onEditClick(int position);
