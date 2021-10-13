@@ -101,9 +101,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        Menu optionsMenu = menu;
-        MenuItem searchItem = optionsMenu.findItem(R.id.search_icon);
-        MenuItem profileItem = optionsMenu.findItem(R.id.profile_icon);
+        MenuItem searchItem = menu.findItem(R.id.search_icon);
+        MenuItem profileItem = menu.findItem(R.id.profile_icon);
         profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 startActivity(i);
 
 
-                return false;
+                return true;
             }
         });
         searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         return false;
                     }
                 });
-                return false;
+                return true;
             }
         });
 
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public void onDeleteClick(int position) {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(tasksAdapter.getActivity());
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setTitle("Delete Task");
         builder.setMessage("Are you sure you want to delete this Task?");
         builder.setPositiveButton("Yes",
